@@ -1,15 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const crypto = require('crypto');
-
-const signMessage = (data) => {
-  const privateKey = process.env.BECKN_PRIVATE_KEY;
-  const sign = crypto.createSign('SHA256');
-  sign.write(JSON.stringify(data));
-  sign.end();
-  return sign.sign(privateKey, 'base64');
-};
+const { signBecknRequest } = require('../controllers/beckn.controller');
+const { mapCompetencies } = require('../utils/competencyMapper');
 
 router.post('/search', async (req, res) => {
   console.log('Search hit:', req.body.skill);
@@ -22,13 +15,41 @@ router.post('/search', async (req, res) => {
     },
     message: { intent: { item: { descriptor: { name: req.body.skill } } } }
   };
-  const signature = signMessage(searchIntent);
+  const signature = signBecknRequest(searchIntent); // Use Ed25519 signing
   try {
-    // Mock for now, skip real sandbox call
-    console.log('Mock search response');
-    res.status(200).json({ ack: true, message: 'Search for ' + req.body.skill });
+    const lookupResponse = await axios.post(`${process.env.BECKN_REGISTRY_URL}/onest/lookup`, {
+      country: "IND",
+      type: "BPP"
+    });
+    console.log('Full lookup response:', JSON.stringify(lookupResponse.data, null, 2));
+    const bppUrl = lookupResponse.data.subscribers?.[0]?.subscriber_url || lookupResponse.data?.[0]?.subscriber_url;
+
+    if (!bppUrl) {
+      return res.status(404).json({ error: "No BPP URL found in response" });
+    }
+
+    const response = await axios.post(`${bppUrl}/search`, searchIntent, {
+      headers: { 
+        Authorization: `Signature ${signature}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    res.json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('ONEST error:', error.response?.data || error.message);
+    if (error.response?.status === 503) {
+      const mockData = [{ skill: req.body.skill, nsqf_level: 5 }]; // Use req.body.skill directly
+      const mappedData = mapCompetencies(mockData, 5);
+      res.status(200).json({
+        ack: true,
+        message: `Search for ${req.body.skill} (ONEST unavailable, mock data)`,
+        signature,
+        mock_data: { skill: req.body.skill, nsqf_level: 5 },
+        mapped_data: mappedData
+      });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 });
 
