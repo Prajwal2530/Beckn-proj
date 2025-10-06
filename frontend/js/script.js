@@ -1,4 +1,5 @@
 // Wait until DOM is loaded
+
 document.addEventListener("DOMContentLoaded", function() {
 
     /************** Loader & Logo Animation **************/
