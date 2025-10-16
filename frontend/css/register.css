@@ -1,0 +1,135 @@
+/* ---------- General setup ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: url("../images/bg-wave.png.jpg") no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ---------- Registration Box with Glass Effect ---------- */
+.register-box {
+  width: 360px;
+  background: rgba(255, 255, 255, 0.1); /* lighter semi-transparent background */
+  border-radius: 15px;
+  padding: 35px 30px;
+  position: relative;
+  color: white;
+  backdrop-filter: blur(12px); /* stronger blur for glass effect */
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); /* subtle elevated shadow */
+  border: 1px solid rgba(255, 255, 255, 0.4); /* stronger white lining */
+  z-index: 1;
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+/* ---------- Close Button ---------- */
+.close-btn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: #ff5555;
+}
+
+/* ---------- Input Fields ---------- */
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 8px 0;
+}
+
+.input-field input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.95rem;
+  padding-left: 5px;
+}
+
+.icon {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+}
+
+/* ---------- Checkbox ---------- */
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #cfcfcf;
+  margin-bottom: 20px;
+}
+.checkbox input {
+  margin-right: 6px;
+}
+
+/* ---------- Register Button ---------- */
+.register-btn {
+  width: 100%;
+  background: linear-gradient(to right, #111, #000000);
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.4); /* small white lining */
+  padding: 10px 0;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.register-btn:hover {
+  background: linear-gradient(to right, #333, #555);
+  border: 1px solid rgba(255, 255, 255, 0.6); /* slightly stronger on hover */
+}
+
+/* ---------- Footer Text ---------- */
+.login-text {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  color: #ccc;
+}
+.login-text a {
+  color: #4dd4ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.login-text a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .register-box {
+    width: 85%;
+    padding: 25px 20px;
+  }
+}
