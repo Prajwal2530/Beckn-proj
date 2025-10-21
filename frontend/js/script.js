@@ -66,14 +66,30 @@ if(featureCards.length > 0) {
 }
 
     
-    /************** Optional: Mobile Menu Toggle **************/
-    const menuBtn = document.querySelector(".menu-btn");
-    const navMenu = document.querySelector("nav ul");
+    /************** Mobile Menu Toggle (new) **************/
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navEl = document.querySelector('nav');
 
-    if(menuBtn && navMenu){
-        menuBtn.addEventListener("click", () => {
-            navMenu.classList.toggle("show"); // Add a 'show' class in CSS for mobile display
+    if(menuToggle && navEl){
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.addEventListener('click', () => {
+            const isOpen = navEl.classList.toggle('open');
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            console.log('menuToggle clicked — nav open:', isOpen);
         });
+    }
+
+    /************** Ensure initial loader doesn't block clicks **************/
+    const initialLoader = document.querySelector('.initial-loader');
+    if(initialLoader){
+        // When its CSS animation finishes, remove it from the flow so it won't intercept clicks
+        initialLoader.addEventListener('animationend', () => {
+            try{ initialLoader.style.display = 'none'; }catch(e){}
+        });
+        // Fallback: hide after 3.5s in case animationend doesn't fire
+        setTimeout(() => {
+            try{ initialLoader.style.display = 'none'; }catch(e){}
+        }, 3500);
     }
 
 });
