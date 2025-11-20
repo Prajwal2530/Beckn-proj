@@ -1,61 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: url("../images/bg-wave.png.jpg") no-repeat center center/cover;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: url('../images/skill.jpg') no-repeat center center fixed;
+  background-size: cover;
   position: relative;
-  background-color: #000; /* optional fallback */
 }
 
-
-/* Wavy background */
-.background {
+/* Dark overlay */
+body::before {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.7);
   z-index: 0;
 }
 
-.wave {
-  position: absolute;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(90deg, #00ff99, #0066ff);
-  opacity: 0.2;
-  top: 0;
-  left: -50%;
-  animation: wave 6s infinite linear;
-  filter: blur(50px);
+/* Container for login box */
+.container {
+  position: relative;
+  z-index: 1;
 }
 
-.wave2 {
-  background: linear-gradient(90deg, #0099ff, #00ff66);
-  animation: wave 10s infinite linear reverse;
-  opacity: 0.25;
-}
-
-@keyframes wave {
-  from { transform: translateX(0); }
-  to { transform: translateX(50%); }
-}
-
-/* Glassmorphic login box */
+/* Login form styling (glassmorphic) */
 .login-container {
-  z-index: 2;
   width: 340px;
   padding: 30px 40px;
   border-radius: 12px;
@@ -65,8 +42,7 @@ body {
   color: #fff;
   text-align: center;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.4); /* stronger white lining */
-
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .close-btn {
@@ -131,7 +107,7 @@ input[type="password"] {
   border: none;
   background: linear-gradient(90deg, #000000, #020202);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.4); /* small white lining */
+  border: 1px solid rgba(255, 255, 255, 0.4);
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
@@ -156,10 +132,29 @@ input[type="password"] {
   text-decoration: underline;
 }
 
-.icon {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1rem;
-  margin-left: 8px;
+/* Success/Error message */
+.success, .error {
+  margin-top: 15px;
+  font-weight: bold;
+  display: none;
+}
+.success { color: #00ff7f; }
+.error { color: #ff5555; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    width: 85%;
+    padding: 25px 20px;
+  }
+}
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
 }
 
-
+/* Apply animation to container */
+.container {
+    animation: fadeIn 1s ease forwards;
+}
